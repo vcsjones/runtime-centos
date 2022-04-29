@@ -1,4 +1,4 @@
-name: Create Codespaces Prebuild
+name: Run Cryptography Tests
 on:
   schedule:
     - cron:  '0 6 * * *'
