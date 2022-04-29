@@ -47,5 +47,20 @@ jobs:
       run: |
         mkdir /projects
         cd /projects
-        git clone ${{ github.event.inputs.repository }}
+        git clone ${{ github.event.inputs.repository }} runtime
+        cd ./runtime
         git checkout ${{ github.event.inputs.branch }}
+    - name: Build Runtime
+      run: ./build.sh -rc release -s clr+libs
+      env:
+        OPENSSL_ENABLE_SHA1_SIGNATURES: "1"
+    - name: Build Tests
+      run: |
+        ./dotnet.sh build src/libraries/System.Security.Cryptography/tests
+        ./dotnet.sh build src/libraries/System.Security.Cryptography.Csp/tests
+        ./dotnet.sh build src/libraries/System.Security.Cryptography.X509Certificates/tests
+        ./dotnet.sh build src/libraries/System.Security.Cryptography.Xml/tests
+        ./dotnet.sh build src/libraries/System.Security.Cryptography.Pkcs/tests
+        ./dotnet.sh build src/libraries/System.Security.Cryptography.OpenSsl/tests
+      env:
+        OPENSSL_ENABLE_SHA1_SIGNATURES: "1"
