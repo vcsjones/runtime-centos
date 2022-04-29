@@ -51,11 +51,14 @@ jobs:
         cd ./runtime
         git checkout ${{ github.event.inputs.branch }}
     - name: Build Runtime
-      run: ./build.sh -rc release -s clr+libs
+      run: |
+        cd /projects/runtime
+        ./build.sh -rc release -s clr+libs
       env:
         OPENSSL_ENABLE_SHA1_SIGNATURES: "1"
     - name: Build Tests
       run: |
+        cd /projects/runtime
         ./dotnet.sh build src/libraries/System.Security.Cryptography/tests
         ./dotnet.sh build src/libraries/System.Security.Cryptography.Csp/tests
         ./dotnet.sh build src/libraries/System.Security.Cryptography.X509Certificates/tests
