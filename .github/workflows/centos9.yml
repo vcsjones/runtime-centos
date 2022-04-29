@@ -76,7 +76,6 @@ jobs:
         ./dotnet.sh test --no-restore src/libraries/System.Security.Cryptography.Xml/tests | tee -a results.txt
         ./dotnet.sh test --no-restore src/libraries/System.Security.Cryptography.Pkcs/tests | tee -a results.txt
         ./dotnet.sh test --no-restore src/libraries/System.Security.Cryptography.OpenSsl/tests | tee -a results.txt
-    - name: Upload Results
     - uses: actions/upload-artifact@v3
       with:
         name: results
