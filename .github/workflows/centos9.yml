@@ -46,9 +46,9 @@ jobs:
             libunwind-devel
   - name: Checkout Runtime
     uses: actions/github-script@v3
-      with:
-        script: |
-          mkdir /projects
-          cd /projects
-          git clone ${{ github.event.inputs.repository }}
-          git checkout ${{ github.event.inputs.branch }}
+    with:
+      script: |
+        mkdir /projects
+        cd /projects
+        git clone ${{ github.event.inputs.repository }}
+        git checkout ${{ github.event.inputs.branch }}
