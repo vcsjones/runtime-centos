@@ -20,36 +20,32 @@ jobs:
       image: quay.io/centos/centos:stream9
     steps:
     - name: Setup Prerequisites
-      uses: actions/github-script@v3
-      with:
-        script: |
-          dnf -y groupinstall 'Development Tools'
-          dnf install -y dnf-plugins-core epel-release
-          dnf repolist --all
-          dnf config-manager --set-enabled crb
-          dnf install -y \
-              clang \
-              cmake \
-              git \
-              glibc-langpack-en \
-              hostname \
-              krb5-devel \
-              libicu-devel \
-              lld \
-              llvm \
-              make \
-              openssl-devel \
-              python3 \
-              tar \
-              util-linux \
-              zlib-devel \
-              lttng-ust-devel \
-              libunwind-devel
+      run: |
+        dnf -y groupinstall 'Development Tools'
+        dnf install -y dnf-plugins-core epel-release
+        dnf repolist --all
+        dnf config-manager --set-enabled crb
+        dnf install -y \
+            clang \
+            cmake \
+            git \
+            glibc-langpack-en \
+            hostname \
+            krb5-devel \
+            libicu-devel \
+            lld \
+            llvm \
+            make \
+            openssl-devel \
+            python3 \
+            tar \
+            util-linux \
+            zlib-devel \
+            lttng-ust-devel \
+            libunwind-devel
     - name: Checkout Runtime
-      uses: actions/github-script@v3
-      with:
-        script: |
-          mkdir /projects
-          cd /projects
-          git clone ${{ github.event.inputs.repository }}
-          git checkout ${{ github.event.inputs.branch }}
+      run: |
+        mkdir /projects
+        cd /projects
+        git clone ${{ github.event.inputs.repository }}
+        git checkout ${{ github.event.inputs.branch }}
