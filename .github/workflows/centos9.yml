@@ -1,0 +1,54 @@
+name: Create Codespaces Prebuild
+on:
+  schedule:
+    - cron:  '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      repository:
+        type: choice
+        default: https://github.com/dotnet/runtime.git
+        options:
+        - https://github.com/dotnet/runtime.git
+        - https://github.com/vcsjones/runtime.git
+      branch:
+        type: string
+        default: main
+jobs:
+  run-tests:
+  container:
+    image: quay.io/centos/centos:stream9
+  steps:
+  - name: Setup Prerequisites
+    uses: actions/github-script@v3
+    with:
+      script: |
+        dnf -y groupinstall 'Development Tools'
+        dnf install -y dnf-plugins-core epel-release
+        dnf repolist --all
+        dnf config-manager --set-enabled crb
+        dnf install -y \
+            clang \
+            cmake \
+            git \
+            glibc-langpack-en \
+            hostname \
+            krb5-devel \
+            libicu-devel \
+            lld \
+            llvm \
+            make \
+            openssl-devel \
+            python3 \
+            tar \
+            util-linux \
+            zlib-devel \
+            lttng-ust-devel \
+            libunwind-devel
+  - name: Checkout Runtime
+    uses: actions/github-script@v3
+      with:
+        script: |
+          mkdir /projects
+          cd /projects
+          git clone ${{ github.event.inputs.repository }}
+          git checkout ${{ github.event.inputs.branch }}
