@@ -67,3 +67,17 @@ jobs:
         ./dotnet.sh build src/libraries/System.Security.Cryptography.OpenSsl/tests
       env:
         OPENSSL_ENABLE_SHA1_SIGNATURES: "1"
+    - name: Run Tests
+      run: |
+        cd /projects/runtime
+        ./dotnet.sh test --no-restore src/libraries/System.Security.Cryptography/tests | tee -a results.txt
+        ./dotnet.sh test --no-restore src/libraries/System.Security.Cryptography.Csp/tests | tee -a results.txt
+        ./dotnet.sh test --no-restore src/libraries/System.Security.Cryptography.X509Certificates/tests | tee -a results.txt
+        ./dotnet.sh test --no-restore src/libraries/System.Security.Cryptography.Xml/tests | tee -a results.txt
+        ./dotnet.sh test --no-restore src/libraries/System.Security.Cryptography.Pkcs/tests | tee -a results.txt
+        ./dotnet.sh test --no-restore src/libraries/System.Security.Cryptography.OpenSsl/tests | tee -a results.txt
+    - name: Upload Results
+    - uses: actions/upload-artifact@v3
+      with:
+        name: results
+        path: /projects/runtime/results.txt
